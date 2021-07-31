@@ -7,7 +7,7 @@ from sklearn.ensemble import RandomForestRegressor
 from sklearn.preprocessing import LabelEncoder
 from math import sqrt
 from xgboost.sklearn import XGBRegressor
-from externalModules import isitanint, severityCheck
+from externalModules import isitanint, severityCheck, subEventWeight
 from art import tprint
 
 df = pd.read_excel("CAT_Training_Dataset_V3 File.xlsx")
@@ -35,7 +35,7 @@ df['units'] = df['units'].apply(np.int64)
 ## Creating Sub Events Column
 
 df['subEvent'] = df.event.apply(lambda x: pd.Series(str(x).split("_")[-1]))
-df = pd.get_dummies(df, columns=["subEvent"])
+df = df[df.subEvent.apply(lambda x: pd.Series(subEventWeight(x)))]
 
 ## Cleaning Events Column
 
@@ -50,25 +50,23 @@ df['occur_count'] = df['occur_count'].apply(np.int64)
 
 ## Cleaning Severity Level
 
-df = df[df.svrty_level.apply(lambda x: isitanint(x))]
-df = df[df.svrty_level.apply(lambda x: severityCheck(x))]
+df = df.svrty_level.apply(lambda x: pd.Series(isitanint(x)))
+df = df.svrty_level.apply(lambda x: pd.Series(severityCheck(x)))
 df['svrty_level'] = df['svrty_level'].apply(np.int64)
 
 print(df.head())
 
-
-x = df.drop('date', axis = 1)
+x = df.drop('date', 'occur_count', axis = 1)
 y = df['date']
-X_train, X_test, Y_train, Y_test = train_test_split(x, y, test_size = 0.3, random_state = 32)
+X_train, X_test, Y_train, Y_test = train_test_split(x, y, test_size = 0.1, random_state = 32)
 
-print(x.shape, y.shape, X_train.shape, Y_train.shape)
+testdf = [[1500, '6_deltaSensorB', 0.8], [1600, '6_deltaSensorB', 0.8]]
+testdf = pd.DataFrame(columns = ['units', 'event', 'svrty_level'])
+
+colWeight = [0.5, 0.5, 0.5, 0.5, 1]
 
 clf = XGBRegressor(verbosity = 3)
-clf = clf.fit(X_train, Y_train)
+clf = clf.fit(X_train, Y_train, sample_weight = colWeight)
 pred = clf.predict(X_test)
 error = sqrt(mean_squared_error(Y_test, pred))
 print(error)
-
-# model = neural_network
-# model.fit(x_train, y_train)  #fit the model
-# joblib.dump(model,'knn_model')

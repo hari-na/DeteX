@@ -1,6 +1,5 @@
 import pandas as pd, numpy as np
 
-
 df = pd.read_excel("HalloSaar2.xlsx")
 df = df.drop(['ID', 'candidate', 'date'], axis = 1)
 df['units'] = df['units'].apply(np.int64)

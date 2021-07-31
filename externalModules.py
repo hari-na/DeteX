@@ -10,3 +10,13 @@ def severityCheck(x):
         return True
     else:
         return False
+
+def subEventWeight(x):
+    if(x == 'Low'):
+        return 0.5
+    elif(x == 'High'):
+        return 1.5
+    elif(x == 'exceededLimit'):
+        return 2
+    else:
+        return 1
