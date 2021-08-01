@@ -1,16 +1,13 @@
 import pandas as pd, numpy as np, art
 from scipy.sparse.construct import random
-from scipy import stats
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import mean_squared_error
-from sklearn.ensemble import RandomForestRegressor
-from sklearn.preprocessing import LabelEncoder
 from math import sqrt
 from xgboost.sklearn import XGBRegressor
 from externalModules import isitanint, severityCheck, subEventWeight
 from art import tprint
 
-df = pd.read_excel("CAT_Training_Dataset_V3 File.xlsx")
+df = pd.read_excel("~~~~.xlsx")
 tprint("Data\tLoaded")
 df = df.drop(['ID'], axis = 1)
 print(df.head())
@@ -63,10 +60,12 @@ X_train, X_test, Y_train, Y_test = train_test_split(x, y, test_size = 0.1, rando
 testdf = [[1500, '6_deltaSensorB', 0.8], [1600, '6_deltaSensorB', 0.8]]
 testdf = pd.DataFrame(columns = ['units', 'event', 'svrty_level'])
 
+# Date, Units, Event, Occur Count, 
 colWeight = [0.5, 0.5, 0.5, 0.5, 1]
 
 clf = XGBRegressor(verbosity = 3)
 clf = clf.fit(X_train, Y_train, sample_weight = colWeight)
+
 pred = clf.predict(X_test)
 error = sqrt(mean_squared_error(Y_test, pred))
 print(error)

@@ -9,7 +9,9 @@ app.config['CORS_HEADERS'] = 'Content-Type'
 
 uName, passW, perms = ['Hari', 'Kavin', 'Tharun'], ['KavuMama', 'TharuMama', 'HaruMama'], ['full', 'half', 'rOnly']
 
-
+@app.route('/index')
+def index():
+    return jsonify(message = "Welcome to the Caterpillar DeteX API!")
 
 @app.route('/login', methods=['GET'])
 @cross_origin()
