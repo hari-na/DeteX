@@ -15,5 +15,9 @@ Inventory
 View Machine Details
 Depict, Read, Delete data
 View Data Graphically
-Interactive data section ??
+Interactive data section
 '''
+
+
+
+
