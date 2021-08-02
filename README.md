@@ -10,6 +10,14 @@ Git clone this repository on your local using;
 git clone https://github.com/hari-na/CAT-A-THON
 ```
 
+## Installing libraries
+
+Use the requirements.txt file to install the required libraries using;
+
+```bash
+pip install requirements.txt
+```
+
 ## Usage
 
 Rename the relevant file names within the training,py file, such as the input data and/or the output model for joblib
