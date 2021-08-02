@@ -1,6 +1,7 @@
 React/
 __pycache__/
 *.xlsx
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
